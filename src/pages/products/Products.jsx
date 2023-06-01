@@ -4,8 +4,9 @@ import { getProducts } from '../../store/products/productsSlice'
 import Loader from '../../components/Loader/Loader'
 import ProductGrid from '../../components/products/productGrid/ProductGrid'
 import { Navigate } from 'react-router-dom'
+import './products.scss'
 
-const Product = () => {
+const Products = () => {
 
   const { user } = useSelector(state => state.auth)
   if(!user) return <Navigate to='/login'/>
@@ -19,19 +20,20 @@ const Product = () => {
   const { products, loading, error } = useSelector(state => state.productList)
 
   return (
-    <div>
+    <div className='products-wrapper'>
       { loading && <Loader />}
       { error && <p>{error}</p>}
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-5">
         {
-          products.length > 0
-          ? products.map(product => <ProductGrid key={product.id} product={product} />)
-          : <h2>No products to show</h2>
+          // products.length > 0
+          // ? products.map(product => <ProductGrid key={product.id} product={product} />)
+          // : <h2>No products to show</h2>
           // <ProductGrid key={products._id} products={products} />
+          <ProductGrid products={products} />
         }
       </div>
     </div>
   )
 }
 
-export default Product
+export default Products

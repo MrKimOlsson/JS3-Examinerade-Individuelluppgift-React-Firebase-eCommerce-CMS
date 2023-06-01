@@ -1,9 +1,6 @@
-.form-container {
+/* .form-container {
     display: flex;
     flex-direction: row;
-
-    /* justify-content: center;
-    flex-direction: column; */
     height: auto;
     max-width: 90vh;
     background-color: #fff;
@@ -63,4 +60,4 @@
     border: none;
     box-shadow: 1px 1px 3px #00000067;
     margin-top: 3rem;
-}
+} */

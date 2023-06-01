@@ -11,7 +11,6 @@ const RegisterForm = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  // const [submitted, setSubmitted] = useState(false)
   const { user, loading, error } = useSelector(state => state.auth)
   const navigate = useNavigate()
   const dispatch = useDispatch()
