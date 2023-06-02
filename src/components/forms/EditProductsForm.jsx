@@ -3,11 +3,10 @@ import { useDispatch } from 'react-redux'
 import { deleteDoc, updateDoc, setDoc, doc } from 'firebase/firestore'
 import { db } from '../../firebase/config'
 import { useParams, useNavigate } from 'react-router-dom'
-// import { editProduct } from '../../store/products/productsSlice'
 
 const EditProductForm = () => {
 
-  const [imageURL, setImageURL] = useState('');
+  // State variables for image URLs
   const [imageURL1, setImageURL1] = useState('');
   const [imageURL2, setImageURL2] = useState('');
   const [imageURL3, setImageURL3] = useState('');
@@ -16,8 +15,8 @@ const EditProductForm = () => {
 
   const dispatch = useDispatch()
 
+  // State variable for product data
   const [productData, setProductData] = useState({
-    
     title: '',
     category: '',
     price: '',
@@ -27,21 +26,20 @@ const EditProductForm = () => {
   })
 
   // Create a reference to the product we want to edit
-const productDocRef = doc(db, 'products', product.id)
+  const productDocRef = doc(db, 'products', product.id)
 
-// Updates the referense product and navigates back to products
+  // Updates the referenced product and navigates back to products
   const updateProduct = async () => {
     await updateDoc(productDocRef, {
-    //   "price": 17
-    productData
+      productData
     });
     navigate('/products')
   }
 
   const handleChange = e => {
     const { id, value } = e.target
-    // setImageURL(['"' + imageURL1 + '", "' + imageURL2 + '", "' + imageURL3 + '", "' + imageURL4 + '", "' + imageURL5 + '"'])
-    // console.log(imageURL)
+
+    // Update the corresponding property in the form state
     setProductData(form => {
       return {
         ...form,
@@ -53,13 +51,6 @@ const productDocRef = doc(db, 'products', product.id)
   const handleSubmit = e => {
     e.preventDefault()
     updateProduct()
-    // const data = {
-    //   ...productData,
-    //   imageURL: [imageURL1, imageURL2, imageURL3, imageURL4, imageURL5],
-    //   price: +productData.price
-    // }
-
-    // dispatch(editProduct(data))
   }
 
   return (

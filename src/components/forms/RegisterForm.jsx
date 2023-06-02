@@ -5,17 +5,16 @@ import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, setError } from '../../store/auth/authSlice';
-import './registerForm.scss';
 
 const RegisterForm = () => {
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  // const [submitted, setSubmitted] = useState(false)
-  const { user, loading, error } = useSelector(state => state.auth)
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  // State variable for form data
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -24,9 +23,14 @@ const RegisterForm = () => {
     confirmPassword: ''
   })
 
+  // Function to handle change in the form input
   const handleChange = e => {
     const { id, value } = e.target
+
+    // Update the corresponding property in the form data state
     setFormData(data => ({ ...data, [id]: value }))
+
+    // Update individual state variables for first name, last name, and email
     setFirstName(formData.firstName);
     setLastName(formData.lastName);
     setEmail(formData.email);
@@ -34,8 +38,9 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    if(formData.password != formData.confirmPassword) {
+
+    if (formData.password !== formData.confirmPassword) {
+      // Dispatch an action to set an error message
       dispatch(setError("the passwords don't match"))
       return
     }
@@ -60,9 +65,10 @@ const RegisterForm = () => {
         lastName,
         email,
       };
- 
-      // Geting a reference to the collection on the database
+      
+      // Getting the new user to get the user.uid
       const user = auth.currentUser;
+      // Geting a reference to the collection on the database
       const collectionRef = collection(db, 'admins');
       const docRef = doc(collectionRef, user.uid);
 
@@ -71,13 +77,6 @@ const RegisterForm = () => {
 
       
       navigate('/');
-
-      // useEffect(() => {
-      //       if(submitted && user) {
-      //         navigate('/')
-      //       }
-      //     }, [submitted, user])
-
 
     } catch (error) {
       console.error(error);

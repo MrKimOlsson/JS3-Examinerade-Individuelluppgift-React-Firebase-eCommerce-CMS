@@ -1,40 +1,45 @@
 import { db } from "../../firebase/config"
 import { addDoc, collection, getDocs } from 'firebase/firestore'
 
-const createOrder = async (orderData) => {
-  const collectionRef = collection(db, 'orders')
-  const docRef = await addDoc(collectionRef, orderData)
+// Function to create a new subscriber in the 'subscribers' collection
+const createSubscriber = async (subscriberData) => {
+  // Reference to the 'subscribers' collection in the database
+  const collectionRef = collection(db, 'subscribers');   
+  // Add a new document with the subscriberData to the collection
+  const docRef = await addDoc(collectionRef, subscriberData);
 
-  if(!docRef.id) throw new Error('Something went wrong')
+  // If the document reference doesn't have an ID, throw an error
+  if (!docRef.id) throw new Error('Something went wrong');
 
-  console.log(docRef)
-  return {id: docRef.id, ...orderData}
 
+  console.log(docRef);   
+  // Return an object with the document ID and the subscriberData
+  return { id: docRef.id, ...subscriberData };
 }
 
+// Function to fetch all subscribers from a specified collection
 const getAllAsync = async (col) => {
-  const colRef = collection(db, col)
-  const querySnapshot = await getDocs(colRef)
+  // Reference to the specified collection in the database
+  const colRef = collection(db, col);
+  // Get all documents in the collection
+  const querySnapshot = await getDocs(colRef);
 
-  const orders = []
+  const subscribers = [];
   querySnapshot.forEach(doc => {
-    orders.push({id: doc.id, ...doc.data()})
-  })
+    // Add each document's ID and data to the subscribers array
+    subscribers.push({ id: doc.id, ...doc.data() });
+  });
 
-  return orders
+  // Return the array of subscribers
+  return subscribers;
 }
 
-// const getAsync = async (col, id) => {
-//   const docRef = doc(db, col, id)
-//   const docSnapshot = await getDoc(docRef)
-//   return { id: docSnapshot.id, ...docSnapshot.data() }
-// }
-
-const ordersService = {
-  createOrder,
+// Object containing the subscriber service functions
+const subscribersService = {
+  createSubscriber,   
   getAllAsync
-}
+};
 
-export default ordersService
+export default subscribersService
 
 

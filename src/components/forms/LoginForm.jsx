@@ -1,47 +1,64 @@
-// import React, { useState } from 'react';
-// import { Form, Link, useNavigate } from 'react-router-dom'
-// import axios from 'axios';
-// import './form.css'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { loginUser } from '../../store/auth/authSlice'
 
-// const LoginForm = () => {
-//     const [email, setEmail] = useState('');
-//     const [password, setPassword] = useState('');
-//     const [isLoggedIn, setIsLoggedIn] = useState(false)
-//     const navigate = useNavigate();
-  
-//     const handleLogin = async (e) => {
-//       e.preventDefault();
-//       try {
-//         const res = await axios.post('http://localhost:9999/api/user/login', {
-//           email,
-//           password,
-//         });
-//         console.log(res.data.token); // log the token
-//         setIsLoggedIn(true); // update the login status in the parent component
-//         navigate('/');
-//       } catch (error) {
-//         console.log(error); // handle error
-//       }
-//     };
+const LoginForm = () => {
+  const navigate = useNavigate()
 
+  // Retrieve user, loading, and error state from the Redux store
+  const { user, loading, error } = useSelector(state => state.auth)
+  const dispatch = useDispatch()
 
+  // State variables for form submission
+  const [submitted, setSubmitted] = useState(false)
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  })
 
-//     return (
-//           <div className="form-container">
-//             <Form onSubmit={handleLogin}>
-//               <h4>Please Login to Your Account</h4>
-//               <div className="input-group">
-//                 <label className='form-label' htmlFor="email">E-mail* <Link className='form-lable' to='/register'>Don't have an Account yet?</Link></label>
-//                 <input type="email" name="email" id="email" className='form-inputField' value={email} onChange={(e) => setEmail(e.target.value)} />
-//               </div>
-//               <div className="input-group">
-//                 <label htmlFor="password" className='form-label'>Password* <Link to='/forgotpassword' className='form-lable'>Forgot your password?</Link></label>
-//                 <input type="current-password" name="password" id="password" className='form-inputField' value={password} onChange={(e) => setPassword(e.target.value)} />
-//               </div>
-//               <button className='form-submitBtn' onSubmit={handleLogin}>Submit</button>
-//             </Form>
-//           </div>
-//       );
-//     };
+  const handleChange = e => {
+    const { id, value } = e.target
 
-// export default LoginForm
+    // Update the corresponding property in the form data state
+    setFormData(data => ({ ...data, [id]: value }))
+  }
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+    console.log(formData)
+
+    // Dispatch the loginUser action with the form data
+    await dispatch(loginUser(formData))
+    setSubmitted(true)
+  }
+
+  useEffect(() => {
+    // If form is submitted and user is authenticated, navigate to home page
+    if (submitted && user) {
+      navigate('/')
+    }
+  }, [submitted, user])
+
+  return (
+    <div>
+      <h1 className='text-center my-5'>Login to your account</h1>
+      <p>Not a member? <Link to="/register">Register</Link> instead</p>
+      <form noValidate onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="email" className='form-label'>Email address</label>
+          <input type="email" className='form-control' id='email' value={formData.email} onChange={handleChange} />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="password" className='form-label'>Password</label>
+          <input type="password" className='form-control' id='password' value={formData.password} onChange={handleChange} />
+        </div>
+        { loading && <p>Loading...</p> }
+        { error && <p className='text-danger'>{ error }</p> }
+        <button className='btn btn-primary'>Login</button>
+      </form>
+    </div>
+  )
+}
+
+export default LoginForm

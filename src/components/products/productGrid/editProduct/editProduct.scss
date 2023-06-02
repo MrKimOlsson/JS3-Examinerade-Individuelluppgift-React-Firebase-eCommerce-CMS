@@ -1,0 +1,22 @@
+.updateForm {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem; 
+}
+
+.input-group{
+    display: flex;
+    gap: 1rem;
+    text-align: left;
+    font-weight: bold;
+    margin-right: 2rem;
+}
+
+.title-update {
+    margin-bottom: 2rem;
+}
+
+.btn-div {
+    display: flex;
+    justify-content: space-between;
+}

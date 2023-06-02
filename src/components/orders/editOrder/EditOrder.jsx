@@ -3,14 +3,17 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/config';
 import { useNavigate } from 'react-router-dom';
 
-const EditOrder = ({ order }) => {
 
+const EditOrder = ({ order }) => {
+  // Hook for programmatic navigation
   const navigate = useNavigate();
 
+  // State for storing the updated order data
   const [orderData, setOrderData] = useState({
-    status:           order.status
+    status: order.status
   });
 
+  // Event handler for input changes
   const handleChange = e => {
     const { id, value } = e.target;
     setOrderData(form => ({
@@ -19,17 +22,19 @@ const EditOrder = ({ order }) => {
     }));
   };
 
-  
-
+  // Updates the order with the new status
   const updateOrder = async (e) => {
     e.preventDefault()
     try {
+      // Get a reference to the order document in the database
       const docRef = doc(db, 'orders', order.id); 
 
+      // Update the order document with the new status
       await updateDoc(docRef, {
         status: orderData.status
       });
 
+      // Navigate back to the orders page
       navigate('/orders');
     } catch (error) {
       console.log(error);

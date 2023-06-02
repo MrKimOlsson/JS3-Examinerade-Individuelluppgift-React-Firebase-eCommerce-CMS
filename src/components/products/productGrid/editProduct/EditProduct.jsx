@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
-// import './editProduct.scss';
+import './editProduct.scss';
 // import '../../form/addProductForm/addProductForm.scss'
 // import { useDispatch, useSelector } from 'react-redux';
-import { doc, updateDoc } from 'firebase/firestore';
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../../firebase/config';
 import { useNavigate } from 'react-router-dom';
 
 const EditProduct = ({ product }) => {
 
+  // Get navigate to redirect user after delete
   const navigate = useNavigate();
 
+  // Delete product function
+  const deleteProduct = async () => {
+    await deleteDoc(doc(db, 'products', product.id))
+    navigate('/products')
+  }
+
+  // Set input fields to match the product data
   const [productData, setProductData] = useState({
     title:            product.title,
     category:         product.category,
@@ -19,6 +27,7 @@ const EditProduct = ({ product }) => {
     imageURL:         product.imageURL,
   });
 
+  // Handle change in input fields
   const handleChange = e => {
     const { id, value } = e.target;
     setProductData(form => ({
@@ -27,6 +36,7 @@ const EditProduct = ({ product }) => {
     }));
   };
 
+  // Handle new images added to the imageURL array
   const handleImageChange = (e, index) => {
     const { value } = e.target
     const images = productData.imageURL
@@ -37,11 +47,13 @@ const EditProduct = ({ product }) => {
     }))
   }
 
+  // Update product function
   const updateProduct = async (e) => {
     e.preventDefault()
     try {
       const docRef = doc(db, 'products', product.id); 
 
+      // Update the product data with input field data
       await updateDoc(docRef, {
         title:              productData.title,
         category:           productData.category,
@@ -51,7 +63,10 @@ const EditProduct = ({ product }) => {
         imageURL:           productData.imageURL,
       });
 
+      // Redirect the user to the products page after submit
       navigate('/products');
+
+      // Catch errors
     } catch (error) {
       console.log(error);
     }
@@ -62,19 +77,19 @@ const EditProduct = ({ product }) => {
       <div className='updateForm-wrapper'>
         <div className='updateForm-container'>
           
-              <h4 className='text-center'>Uppdatera Produkten</h4>
+              <h4 className='text-center title-update'>Uppdatera Produkten</h4>
 
-              <form onSubmit={updateProduct}>
+              <form className="updateForm" onSubmit={updateProduct}>
                 <div className="input-group">
-                  <label htmlFor="name" className="form-label">Product Title:</label>
+                  <label htmlFor="name" className="form-label">Title:</label>
                   <input type="text" className="form-control" id='title' value={productData.title} onChange={handleChange} />
                 </div>
                 <div className="input-group">
                   <label htmlFor="shortDescription" className="form-label">Short Description:</label>
-                  <textarea className='form-control' id="shortDescription" rows="1" value={productData.shortDescription} onChange={handleChange}></textarea>
+                  <textarea className='form-control' id="shortDescription" rows="3" value={productData.shortDescription} onChange={handleChange}></textarea>
                 </div>
                 <div className="input-group">
-                  <label htmlFor="price" className="form-label">Product Price:</label>
+                  <label htmlFor="price" className="form-label">Price:</label>
                   <input type="number" inputMode='decimal' className="form-control" id='price' value={productData.price} onChange={handleChange} />
                 </div>
                 <div className="input-group">
@@ -82,7 +97,7 @@ const EditProduct = ({ product }) => {
                   <textarea className='form-control' id="category" rows="1" value={productData.category} onChange={handleChange}></textarea>
                 </div>
                 <div className="input-group">
-                  <label htmlFor="description" className="form-label">Product Description:</label>
+                  <label htmlFor="description" className="form-label">Description:</label>
                   <textarea className='form-control' id="description" rows="3" value={productData.description} onChange={handleChange}></textarea>
                 </div>
                 {productData.imageURL.map((img, index) => (
@@ -92,8 +107,9 @@ const EditProduct = ({ product }) => {
                   </div>
                 ))
                 }
-                <div className='center'>
-                  <button className="btn btn-primary addProductFormBtn">Uppdatera</button>
+                <div className='btn-div'>
+                  <button className="btn-main btn-update">Update product</button>
+                  <button className="btn-main btn-delete" onClick={deleteProduct}> Delete product</button>
                 </div>
               </form>
         </div>

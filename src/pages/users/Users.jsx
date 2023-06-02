@@ -6,13 +6,15 @@ import UserGrid from '../../components/users/userGrid/UserGrid'
 
 const Users = () => {
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch() // Get the dispatch function from the Redux store
 
   useEffect(() => {
-    dispatch(getUsers())
-  }, [])
+    dispatch(getUsers()) // Dispatch the getUsers action to fetch user data
+  }, []) // Run this effect only once when the component mounts
+  
+  // Extract users, loading, and error from the Redux store state
+  const { users, loading, error } = useSelector(state => state.userList) 
 
-  const { users, loading, error } = useSelector(state => state.userList)
 
   return (
 
@@ -24,57 +26,11 @@ const Users = () => {
           users.length > 0
           ? users.map(user => <UserGrid key={user.id} user={user} />)
           : <h2>No users to show</h2>
-          // <ProductGrid key={products._id} products={products} />
         }
       </div>
     </div>
-    // <div className='user-wrapper'>
-    //   <div className='user-container'>
-
-    //     { loading && <p>Loading...</p> }
-    //     { error && <p>{error}</p> }
-
-    //     {
-    //       users.length > 0
-    //       ? users.map(user => <UserGrid key={user.id} user={user} />)
-    //       : <h2>No users to show</h2>
-    //     }
-        
-        
-    //   </div>
-    // </div>
   )
 }
 
 export default Users
 
-// import React from 'react'
-// import { useState } from 'react'
-// import { useFetch } from "../../hooks/useFetch"
-// import './users.css'
-// import UserListItem from '../../components/userListItem/UserListItem'
-
-// const Users = () => {
-
-
-//     const [url, setUrl] = useState('http://localhost:9999/api/user')
-//     const { data: users, loading, error } = useFetch(url, { method: 'GET' })
-  
-//     return (
-  
-//       <div className='user-wrapper'>
-//           <div className='user-container'>
-  
-//           { loading && <p>Loading...</p> }
-//           { error && <p>{error}</p> }
-  
-//           { users && !loading && !error && users.map(user => (
-//             <UserListItem key={user._id} user={user} />
-//           ))}
-          
-//         </div>
-//       </div>
-//     )
-//   }
-
-// export default Users

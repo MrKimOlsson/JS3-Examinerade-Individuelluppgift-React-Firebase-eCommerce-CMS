@@ -8,20 +8,25 @@ import EditOrder from '../../components/orders/editOrder/EditOrder'
 
 const OrderDetails = () => {
 
-  const { id } = useParams()
-  const { data : order, error, loading } = useDoc('orders', id)
+  const { id } = useParams();
+  const { data: order, error, loading } = useDoc('orders', id);
   
-  if(!order) return (
-    <div>
-      { loading && <Loader />}
-      { error && <p>{error}</p>}
-    </div>
-  )
+  // Check if the order data is not available
+  if (!order) {
+
+    return (
+      <div>
+        {loading && <Loader />} {/* Render a loading spinner if the data is still loading */}
+        {error && <p>{error}</p>} {/* Render an error message if there was an error retrieving the data */}
+      </div>
+    );
+  }
   
-  let orderedProducts = []
+  let orderedProducts = [];
   
-  order.products.forEach(product => {
-    orderedProducts.push(product)
+  // Iterate over each product in the order and add it to the orderedProducts array
+  order.products.forEach((product) => {
+    orderedProducts.push(product);
   });
   
 
@@ -34,6 +39,8 @@ const OrderDetails = () => {
           <p><b>Order ID:</b> {order.id}</p>
           <p><b>User ID:</b> {order.userId}</p>
           <h5>Products:</h5>
+          {console.log("order")}
+          {console.log(order)}
           {/* <p>Order products: {order.products[0].title}</p> */}
           {
             orderedProducts.map((product) => (
