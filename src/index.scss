@@ -25,4 +25,22 @@ body::-webkit-scrollbar{
   padding-top: 4rem;
 }
 
+.btn-main {
+  padding: .5rem 1.3rem .5rem 1.3rem;
+  border-radius: 1rem;
+  border-style: none;
+}
+
+.btn-delete{
+  margin-top: 2rem;
+  background-color: firebrick;
+  color: #fff;
+}
+
+.btn-update{
+  margin-top: 2rem;
+  background-color: rgb(24, 24, 198);
+  color: #fff;
+}
+
 @import "../node_modules/bootstrap/scss/bootstrap.scss"

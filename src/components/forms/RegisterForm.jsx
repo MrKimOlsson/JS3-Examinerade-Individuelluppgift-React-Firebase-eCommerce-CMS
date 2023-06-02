@@ -11,7 +11,7 @@ const RegisterForm = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const { user, loading, error } = useSelector(state => state.auth)
+  // const { user, loading, error } = useSelector(state => state.auth)
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -59,9 +59,10 @@ const RegisterForm = () => {
         lastName,
         email,
       };
- 
-      // Geting a reference to the collection on the database
+      
+      // Getting the new user to get the user.uid
       const user = auth.currentUser;
+      // Geting a reference to the collection on the database
       const collectionRef = collection(db, 'admins');
       const docRef = doc(collectionRef, user.uid);
 

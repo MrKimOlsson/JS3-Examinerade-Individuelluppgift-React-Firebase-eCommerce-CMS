@@ -1,14 +1,14 @@
 import { db } from "../../firebase/config"
 import { addDoc, collection, getDocs } from 'firebase/firestore'
 
-const createOrder = async (orderData) => {
-  const collectionRef = collection(db, 'orders')
-  const docRef = await addDoc(collectionRef, orderData)
+const createSubscriber = async (subscriberData) => {
+  const collectionRef = collection(db, 'subscribers')
+  const docRef = await addDoc(collectionRef, subscriberData)
 
   if(!docRef.id) throw new Error('Something went wrong')
 
   console.log(docRef)
-  return {id: docRef.id, ...orderData}
+  return {id: docRef.id, ...subscriberData}
 
 }
 
@@ -16,25 +16,20 @@ const getAllAsync = async (col) => {
   const colRef = collection(db, col)
   const querySnapshot = await getDocs(colRef)
 
-  const orders = []
+  const subscribers = []
   querySnapshot.forEach(doc => {
-    orders.push({id: doc.id, ...doc.data()})
+    subscribers.push({id: doc.id, ...doc.data()})
   })
 
-  return orders
+  return subscribers
 }
 
-// const getAsync = async (col, id) => {
-//   const docRef = doc(db, col, id)
-//   const docSnapshot = await getDoc(docRef)
-//   return { id: docSnapshot.id, ...docSnapshot.data() }
-// }
 
-const ordersService = {
-  createOrder,
+const subscribersService = {
+  createSubscriber,
   getAllAsync
 }
 
-export default ordersService
+export default subscribersService
 
 

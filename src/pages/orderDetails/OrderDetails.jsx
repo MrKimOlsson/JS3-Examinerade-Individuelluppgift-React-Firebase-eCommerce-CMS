@@ -34,6 +34,8 @@ const OrderDetails = () => {
           <p><b>Order ID:</b> {order.id}</p>
           <p><b>User ID:</b> {order.userId}</p>
           <h5>Products:</h5>
+          {console.log("order")}
+          {console.log(order)}
           {/* <p>Order products: {order.products[0].title}</p> */}
           {
             orderedProducts.map((product) => (

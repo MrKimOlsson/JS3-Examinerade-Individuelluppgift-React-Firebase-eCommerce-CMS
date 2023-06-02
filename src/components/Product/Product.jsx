@@ -2,20 +2,24 @@ import './product.scss'
 import { Link } from 'react-router-dom'
 
 const Product = ({ product }) => {
+  if (!product) {
+    return null; // Return null if the product is undefined or null
+  }
+
   return (
-    <div className='product'>
+    <div className="product-wrapper">
       <Link to={`/productDetails/${product.id}`}>
-        <h2 className='productTitle'>{product.title}</h2>
-        <div className='flex-row'>
-        <img className='productGridImage' src={product.imageURL[0]} alt="Product image"/>
-        <p className="card-text">{product.description.slice(0, 350)}...</p>
+        <div className='product'>
+          <h2 className='productTitle'>{product.title}</h2>
+          <div className='flex-row'>
+            <img className='productGridImage' src={product.imageURL[0]} alt="Product image"/>
+            <p className="card-text">{product.description.slice(0, 350)}...</p>
+          </div>
+          <p className="price">Price: {product.price}:-</p>
         </div>
-        <p className="price">Price: {product.price}:-</p>
-        {/* <p>{product.description.slice(0,40)}...</p> */}
       </Link>
     </div>
   )
 }
-
 
 export default Product

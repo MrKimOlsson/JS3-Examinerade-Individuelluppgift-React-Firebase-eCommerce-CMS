@@ -23,12 +23,8 @@ const Products = () => {
     <div className='products-wrapper'>
       { loading && <Loader />}
       { error && <p>{error}</p>}
-      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-5">
+      <div className="">
         {
-          // products.length > 0
-          // ? products.map(product => <ProductGrid key={product.id} product={product} />)
-          // : <h2>No products to show</h2>
-          // <ProductGrid key={products._id} products={products} />
           <ProductGrid products={products} />
         }
       </div>
@@ -37,3 +33,9 @@ const Products = () => {
 }
 
 export default Products
+
+
+// products.length > 0
+// ? products.map(product => <ProductGrid key={product.id} product={product} />)
+// : <h2>No products to show</h2>
+// <ProductGrid key={products._id} products={products} />

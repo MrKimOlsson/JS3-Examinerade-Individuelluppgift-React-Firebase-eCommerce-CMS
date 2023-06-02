@@ -7,20 +7,19 @@ import { useParams, useNavigate } from 'react-router-dom'
 import Loader from '../../components/Loader/Loader'
 import EditProductForm from '../../components/forms/EditProductsForm'
 import EditProduct from '../../components/products/productGrid/editProduct/EditProduct'
+import './productDetails.scss'
 
 const ProductDetails = () => {
   
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   
-  const deleteProduct = async () => {
-    await deleteDoc(doc(db, 'products', product.id))
-    navigate('/products')
-  }
+  // const deleteProduct = async () => {
+  //   await deleteDoc(doc(db, 'products', product.id))
+  //   navigate('/products')
+  // }
 
   const { id } = useParams()
   const { data : product, error, loading } = useDoc('products', id)
-  console.log('single product')
-  console.log(product)
 
   if(!product) return (
     <div>
@@ -42,34 +41,24 @@ const ProductDetails = () => {
 
 
   return (
-    <div className="my-5 py-5">
-      <section className="text-center">
-        <div className="row">
-          {console.log('single product2')}
-          {console.log(product)}
+    <section className="wrapper">
+      <div className="productDetails-wrapper">
+        {console.log(product)}
         <h3>{product.title}</h3>
-          <div className="col-lg-6">
-            <img src={product.imageURL} alt={product.name} className="img-fluid" />
+        <div className="productDetails-container">
+          <div className="productDetails-image-container">
+            <img src={product.imageURL} alt={product.name} className="productDetails-image" />
           </div>
-          <div className="col-lg-6">
-
-            <div className="p-3 mt-lg-5 text-center text-lg-start">
-              {product.description}
-            </div>
-
-            <div className="mt-5 text-lg-end">
-              <p className="h5">Price: {product.price}$</p>
-              <button className="btn btn-info" onClick={deleteProduct}> Delete</button>
-            </div>
+          <div className="productDetails-edit-container">
+            <EditProduct product={product}/>
           </div>
         </div>
-        <EditProduct product={product}/>
-      </section>
+      </div>
+    </section>
       
 
 
       
-    </div>
   )
 }
 

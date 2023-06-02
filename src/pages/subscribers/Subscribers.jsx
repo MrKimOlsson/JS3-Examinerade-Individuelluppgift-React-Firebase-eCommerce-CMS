@@ -20,11 +20,11 @@ const Subscribers = () => {
       <div className='subscriber-wrapper'>
           <div className='subscriber-container'>
   
-          { loading && <p><Loader /></p> }
+          { loading && <Loader /> }
           { error && <p>{error}</p> }
   
           { subscribers && !loading && !error && subscribers.map(subscriber => (
-            <SubscriberGrid key={subscriber._id} subscriber={subscriber} />
+            <SubscriberGrid key={subscriber.id} subscriber={subscriber} />
           ))}
           
         </div>
