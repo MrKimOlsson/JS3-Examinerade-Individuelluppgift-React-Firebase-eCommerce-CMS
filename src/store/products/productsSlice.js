@@ -1,110 +1,64 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import productsService from "./productsService";
 
+// Define the initial state for the products slice
 const initialState = {
-  products: [],
-  error: null,
-  loading: false
+  products: [],     // Array to store products
+  error: null,      // Variable to store error messages (null indicates no error)
+  loading: false    // Boolean flag to indicate if data is loading or not
 }
 
+// Async action to add a new product
 export const addProduct = createAsyncThunk('product-list/add', async (productData, thunkAPI) => {
   try {
-    return await productsService.createProduct(productData)
+    return await productsService.createProduct(productData);   // Create a new product using productData
   } catch (err) {
-    return thunkAPI.rejectWithValue(err.message)
+    return thunkAPI.rejectWithValue(err.message);   // If an error occurs, reject the promise with the error message
   }
-})
+});
 
+// Async action to fetch all products
 export const getProducts = createAsyncThunk('product-list/getAll', async (_, thunkAPI) => {
   try {
-    return await productsService.getAllAsync('products')
+    return await productsService.getAllAsync('products');   // Fetch all products from the server
   } catch (err) {
-    return thunkAPI.rejectWithValue(err.message)
+    return thunkAPI.rejectWithValue(err.message);   // If an error occurs, reject the promise with the error message
   }
-})
+});
 
-
-
+// Create the products slice
 export const productsSlice = createSlice({
-  name: 'Product-list',
-  initialState,
-  reducers: {},
+  name: 'Product-list',    // Name of the slice
+  initialState,            // Use the initial state defined above
+  reducers: {},            // No additional reducers defined
   extraReducers: (builder) => {
     builder
       .addCase(addProduct.pending, (state) => {
-        state.loading = true
+        state.loading = true;   // Set loading state to true when the addProduct async action is pending
       })
       .addCase(addProduct.fulfilled, (state, action) => {
-        state.loading = false
-        state.error = null
-        state.products = [...state.products, action.payload]
+        state.loading = false;                                  // Set loading state to false when the addProduct async action is fulfilled
+        state.error = null;                                     // Clear any previous error
+        state.products = [...state.products, action.payload];   // Add the newly created product to the products array
       })
       .addCase(addProduct.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.payload
+        state.loading = false;                    // Set loading state to false when the addProduct async action is rejected
+        state.error = action.payload;             // Set the error state to the rejected value (error message)
       })
-
-
-
       .addCase(getProducts.pending, (state) => {
-        state.loading = true
+        state.loading = true;    // Set loading state to true when the getProducts async action is pending
       })
       .addCase(getProducts.fulfilled, (state, action) => {
-        state.loading = false
-        state.error = null
-        state.products = action.payload
+        state.loading = false;                         // Set loading state to false when the getProducts async action is fulfilled
+        state.error = null;                            // Clear any previous error
+        state.products = action.payload;               // Set the products array to the received payload (array of products)
       })
       .addCase(getProducts.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.payload
-      })
+        state.loading = false;                 // Set loading state to false when the getProducts async action is rejected
+        state.error = action.payload;          // Set the error state to the rejected value (error message)
+      });
   }
-})
+});
+
 
 export default productsSlice.reducer
-
-// import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-// import productsService from "./productsService"
-
-// const initialState = {
-//   products: [],
-//   error: null,
-//   loading: false
-// }
-
-// // det första argumenet i async funktionen är våran payload. har vi ingen payload
-// // så kan vi lägga in _
-// export const getAllProducts = createAsyncThunk('products/getAll', async (_, thunkAPI) => {
-//   try {
-//     return await productsService.getAllAsync()
-//   } catch (err) {
-//     console.log(err.message)
-//     return thunkAPI.rejectWithValue(err.message)
-//   }
-// })
-
-
-// export const productsSlice = createSlice({
-//   name: 'products',
-//   initialState,
-//   reducers: {},
-//   extraReducers: (builder) => {
-//     builder
-//       .addCase(getAllProducts.pending, (state, action) => {
-//         state.loading = true
-//       })
-//       .addCase(getAllProducts.fulfilled, (state, action) => {
-//         state.loading = false
-//         state.products = action.payload
-//         state.error = null
-//       })
-//       .addCase(getAllProducts.rejected, (state, action) => {
-//         state.loading = false
-//         state.products = []
-//         state.error = action.payload
-//       })
-//   }
-// })
-
-
-// export default productsSlice.reducer

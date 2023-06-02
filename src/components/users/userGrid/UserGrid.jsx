@@ -1,13 +1,10 @@
 import React from 'react'
 import './userGrid.scss'
 import { Link } from 'react-router-dom'
-// import { FaCartPlus } from 'react-icons/fa'
-
 
 
 const UserGrid = ({ user }) => {
   
-
   return (
     <div className="col">
       <div className="card h-100">

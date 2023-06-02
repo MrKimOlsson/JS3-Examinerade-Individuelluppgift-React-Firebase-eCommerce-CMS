@@ -1,20 +1,27 @@
 import React from 'react'
-import { FaCartPlus } from 'react-icons/fa'
 import useDoc from '../../hooks/useDoc'
 import { useParams } from 'react-router-dom'
 import Loader from '../../components/Loader/Loader'
 
+
 const UserDetails = () => {
+  // Accessing the 'id' parameter from the URL
+  const { id } = useParams();
 
-  const { id } = useParams()
-  const { data : user, error, loading } = useDoc('users', id)
+  // Retrieving the user data, error, and loading state using a custom hook called 'useDoc'
+  const { data: user, error, loading } = useDoc('users', id);
 
-  if(!user) return (
-    <div>
-      { loading && <Loader />}
-      { error && <p>{error}</p>}
-    </div>
-  )
+  // If the user data is not available, render a loader and an error message
+  if (!user) {
+    return (
+      <div>
+        {/* Display a loader if the data is still loading */}
+        {loading && <Loader />}
+        {/* Display an error message if there is an error */}
+        {error && <p>{error}</p>}
+      </div>
+    );
+  }
 
   return (
     <div className="my-5 py-5">
@@ -35,20 +42,3 @@ const UserDetails = () => {
 }
 
 export default UserDetails
-
-
-
-// import React from 'react'
-
-// const UserDetails = ({user}) => {
-//   return (
-//     <div>
-//       <img className="userGridImage" src={user.imageURL} alt="" />
-//       <h3>{user.firstName + ' ' + user.lastName}</h3>
-//       <p>{user.email}</p>
-//       <p>{user.adress}</p>
-//     </div>
-//   )
-// }
-
-// export default UserDetails

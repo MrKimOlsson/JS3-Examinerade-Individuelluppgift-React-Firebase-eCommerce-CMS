@@ -8,15 +8,14 @@ import './products.scss'
 
 const Products = () => {
 
-  const { user } = useSelector(state => state.auth)
-  if(!user) return <Navigate to='/login'/>
-
   const dispatch = useDispatch()
 
   useEffect(() => {
+    // Dispatches an action to fetch products
     dispatch(getProducts())
   }, [])
-
+  
+  // Extracts the 'products', 'loading', and 'error' states from the Redux store
   const { products, loading, error } = useSelector(state => state.productList)
 
   return (

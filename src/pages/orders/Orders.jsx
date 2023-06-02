@@ -8,18 +8,14 @@ import './orders.scss'
 
 const Orders = () => {
 
-  // Protected route - navigate to login if admin user is not logged in
-  const { user } = useSelector(state => state.auth)
-  if(!user) return <Navigate to='/login'/>
-
-  // Declair dispatch
   const dispatch = useDispatch()
   
-  // Use dispatch to get the orders
+ // Fetch orders when the component mounts using the useEffect hook
   useEffect(() => {
     dispatch(getOrders())
   }, [])
-
+  
+// Extract the 'orders', 'loading', and 'error' properties from the 'orderList' slice of the Redux store
   const { orders, loading, error } = useSelector(state => state.orderList)
 
   return (

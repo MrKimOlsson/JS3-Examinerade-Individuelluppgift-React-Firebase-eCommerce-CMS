@@ -1,9 +1,11 @@
 import './product.scss'
 import { Link } from 'react-router-dom'
 
+// Component for displaying a single product
 const Product = ({ product }) => {
+  // Return null if the product is undefined or null
   if (!product) {
-    return null; // Return null if the product is undefined or null
+    return null;
   }
 
   return (

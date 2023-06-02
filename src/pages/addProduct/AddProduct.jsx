@@ -1,60 +1,68 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { addProduct } from '../../store/products/productsSlice'
-import { Navigate, useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProduct } from '../../store/products/productsSlice';
+import { Navigate, useNavigate } from 'react-router-dom';
+
 const AddProduct = () => {
+  // Accessing the 'user' state from the Redux store
+  const { user } = useSelector(state => state.auth);
 
-  const { user } = useSelector(state => state.auth)
+  // Accessing the 'error' state from the Redux store
+  const { error } = useSelector(state => state.productList);
 
-  const { error } = useSelector(state => state.productList)
+  // Initializing the 'navigate' function from react-router-dom
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
+  // Initializing the 'dispatch' function from react-redux
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
-
-
+  // State variables to manage image URLs
   const [imageURL1, setImageURL1] = useState('');
   const [imageURL2, setImageURL2] = useState('');
   const [imageURL3, setImageURL3] = useState('');
   const [imageURL4, setImageURL4] = useState('');
   const [imageURL5, setImageURL5] = useState('');
 
+  // State variable to manage the product data
   const [productData, setProductData] = useState({
-    
     title: '',
     category: '',
     price: '',
     shortDescription: '',
     description: '',
     imageURL: []
-  })
+  });
 
+  // Event handler for input changes
   const handleChange = e => {
-    const { id, value } = e.target
+    const { id, value } = e.target;
     setProductData(form => {
       return {
         ...form,
         [id]: value
-      }
-    })
-  }
+      };
+    });
+  };
 
+  // Event handler for form submission
   const handleSubmit = e => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-    const data = {
-      ...productData,
-      imageURL: [imageURL1, imageURL2, imageURL3, imageURL4, imageURL5],
-      price: +productData.price
-    }
+      const data = {
+        ...productData,
+        imageURL: [imageURL1, imageURL2, imageURL3, imageURL4, imageURL5],
+        price: +productData.price
+      };
 
-    dispatch(addProduct(data))
-    navigate('/products');
+      // Dispatching the 'addProduct' action with the product data
+      dispatch(addProduct(data));
 
+      // Navigating to the '/products' route
+      navigate('/products');
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <div>

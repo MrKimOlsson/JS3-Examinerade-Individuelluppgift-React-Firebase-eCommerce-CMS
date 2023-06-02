@@ -1,27 +1,31 @@
 import { db } from "../../firebase/config"
 import { addDoc, collection, getDocs } from 'firebase/firestore'
 
+// Function to asynchronously fetch all documents from a collection
 const getAllAsync = async (col) => {
-  const colRef = collection(db, col)
-  const querySnapshot = await getDocs(colRef)
+  // Get a reference to the collection using the Firestore collection function
+  const colRef = collection(db, col);
 
-  const admins = []
+  // Retrieve the query snapshot asynchronously using the getDocs function
+  const querySnapshot = await getDocs(colRef);
+
+  // Initialize an empty array to store the fetched data
+  const admins = [];
+
+  // Iterate through each document in the query snapshot
   querySnapshot.forEach(doc => {
-    admins.push({id: doc.id, ...doc.data()})
-  })
+    // Extract the document ID and data, and add it to the admins array
+    admins.push({ id: doc.id, ...doc.data() });
+  });
 
-  return admins
-}
+  // Return the admins array
+  return admins;
+};
 
-// const getAsync = async (col, id) => {
-//   const docRef = doc(db, col, id)
-//   const docSnapshot = await getDoc(docRef)
-//   return { id: docSnapshot.id, ...docSnapshot.data() }
-// }
-
+// Object that represents the admins service, with the getAllAsync function as a property
 const adminsService = {
   getAllAsync
-}
+};
 
 export default adminsService
 

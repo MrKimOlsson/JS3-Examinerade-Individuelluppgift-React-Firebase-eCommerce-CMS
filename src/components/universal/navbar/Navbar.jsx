@@ -1,46 +1,20 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import Logo from '../../../images/logo/Logo.svg'
 import './navbar.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { logoutUser } from '../../../store/auth/authSlice'
-import { getAdmins } from '../../../store/admins/adminsSlice'
-import Loader from '../../Loader/Loader'
+
 
 
 const Navbar = () => {
 
+  // Get the user from the auth state
 const { user } = useSelector(state => state.auth)
 
   const dispatch = useDispatch()
   console.log(user)
 
-
-  // Searching the admin list to find logged in admin
-  
-    // useEffect(() => {
-    //   dispatch(getAdmins())
-    // }, [])
-  
-    // const { admins, loading, error } = useSelector(state => state.adminList)
-    // console.log('admins')
-    // console.log(admins)
-
-    // if(user){
-
-    //     const loggedInAdmin = []
-    //     const serachFunction = async () => {
-    //     admins.forEach(admin => {
-    //       if(admin.email.includes(user.email)){
-    //         return loggedInAdmin.push(admin)
-    //       }
-    //     });
-    //   }
-    //   serachFunction()
-    // }
-
-    
-    
     
     return (
       <>
@@ -56,9 +30,10 @@ const { user } = useSelector(state => state.auth)
               <li><NavLink className='nav-link' to='/'>Home</NavLink></li>
 
               {/* Links below are only avalible while logged in */}
-              {
+         
+              {/* If there is a users show the links below */
                 user
-                ? <>
+                ? <> 
                     <li><NavLink className='nav-link' to='/products'>Products</NavLink></li>
                     <li><NavLink className='nav-link' to='/orders'>Orders</NavLink></li>
                     <li><NavLink className='nav-link' to='/users'>Users</NavLink></li>
@@ -70,6 +45,7 @@ const { user } = useSelector(state => state.auth)
                       <button className='nav-link' onClick={() => dispatch(logoutUser())} >Logout</button>
                     </li>
                   </>
+                  /* If no user is found, only show the links below */
                   : <li className="nav-item">
                       <NavLink className="nav-link" aria-current="page" to="/login">Login</NavLink>
                     </li>

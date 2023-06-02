@@ -6,14 +6,17 @@ import SubscriberGrid from '../../components/subscribers/subscriberGrid/Subscrib
 
 const Subscribers = () => {
 
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
-
+  // Fetch subscribers when the component mounts
   useEffect(() => {
-    dispatch(getSubscribers())
-  }, [])
+  // Dispatches the action to fetch subscribers
+  dispatch(getSubscribers());
+}, []);
 
-  const { subscribers, loading, error } = useSelector(state => state.subscriberList)
+// Retrieve subscribers, loading, and error from the Redux store
+const { subscribers, loading, error } = useSelector(state => state.subscriberList);
+
   
     return (
   

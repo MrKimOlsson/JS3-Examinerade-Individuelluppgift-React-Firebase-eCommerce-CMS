@@ -4,10 +4,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import { loginUser } from '../../store/auth/authSlice'
 
 const LoginForm = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate()
 
+  // Retrieve user, loading, and error state from the Redux store
   const { user, loading, error } = useSelector(state => state.auth)
   const dispatch = useDispatch()
+
+  // State variables for form submission
   const [submitted, setSubmitted] = useState(false)
   const [formData, setFormData] = useState({
     email: '',
@@ -16,18 +19,23 @@ const LoginForm = () => {
 
   const handleChange = e => {
     const { id, value } = e.target
+
+    // Update the corresponding property in the form data state
     setFormData(data => ({ ...data, [id]: value }))
   }
 
   const handleSubmit = async e => {
     e.preventDefault()
     console.log(formData)
+
+    // Dispatch the loginUser action with the form data
     await dispatch(loginUser(formData))
     setSubmitted(true)
   }
 
   useEffect(() => {
-    if(submitted && user) {
+    // If form is submitted and user is authenticated, navigate to home page
+    if (submitted && user) {
       navigate('/')
     }
   }, [submitted, user])
