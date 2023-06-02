@@ -5,15 +5,19 @@ import { useParams } from 'react-router-dom'
 import Loader from '../../components/Loader/Loader'
 import './orderDetails.scss'
 import EditOrder from '../../components/orders/editOrder/EditOrder'
+import UserInformation  from '../../components/users/UserInformation'
 
 const OrderDetails = () => {
 
+  // Retrieving the user data, error, and loading state using a custom hook called 'useDoc'
+  
   const { id } = useParams();
   const { data: order, error, loading } = useDoc('orders', id);
   
+  
   // Check if the order data is not available
   if (!order) {
-
+    
     return (
       <div>
         {loading && <Loader />} {/* Render a loading spinner if the data is still loading */}
@@ -21,6 +25,8 @@ const OrderDetails = () => {
       </div>
     );
   }
+  
+ 
   
   let orderedProducts = [];
   
@@ -38,6 +44,8 @@ const OrderDetails = () => {
           <h3>Order</h3>
           <p><b>Order ID:</b> {order.id}</p>
           <p><b>User ID:</b> {order.userId}</p>
+          <UserInformation order={order} />
+          {/* <p><b>User ID:</b> {user.firstName}</p> */}
           <h5>Products:</h5>
           {console.log("order")}
           {console.log(order)}
